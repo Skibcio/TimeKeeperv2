@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" applicationDPI="160" 
+			   xmlns:driver="jmcnet.mongodb.driver.*"
+			   xmlns:components="components.*"
+			   creationComplete="application_creationCompleteHandler(event)" 
+			   xmlns:Views="views.*"
+			   splashScreenImage="@Embed('image/TimeKeeper.png')"
+			   splashScreenScaleMode="letterbox"
+			   splashScreenMinimumDisplayTime="1500">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.display.BitmapData;
+			
+			import mx.charts.CategoryAxis;
+			import mx.controls.Button;
+			import mx.events.FlexEvent;
+			
+			import Scripts.MongoDBDriver;
+			import Scripts.todoObject;
+			
+			import Style.ButtonStyleToDoIsDone;
+			
+			import jmcnet.mongodb.documents.MongoDocument;
+			import jmcnet.mongodb.documents.MongoDocumentQuery;
+			import jmcnet.mongodb.documents.MongoDocumentResponse;
+			import jmcnet.mongodb.driver.EventMongoDB;
+			import jmcnet.mongodb.driver.MongoResponder;
+			
+			import views.todoNotesEditView;
+			import views.todoView;
+			//import jmcnet.mongodb.driver.MongoResponder;
+			
+			//import sjd.core.sjd_internal;
+			public static var app:TimeKeeperv2;
+			//public var loginView:LoginView;
+			//public var id_ToDoView:todoView;
+			
+			public var LoginCollection:String = "Student1";
+			public var mongoDBDriver:MongoDBDriver;
+			protected var User:Object;
+			
+			public var photo:BitmapData;
+			
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				app = this;
+				//loginView = id_loginView;
+				//query = new MongoDocumentQuery();
+				mongoDBDriver = new MongoDBDriver(app, mongoDriver);
+				this.loginView.view.startApp();
+			}	
+			public function editToDoNotes(_ToDoNote:todoObject):void{
+				
+				id_viewtodo.pushView(views.todoNotesEditView, _ToDoNote);
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Style source="ButtonToDoDone.css" />
+	
+	<fx:Declarations>
+		<driver:JMCNetMongoDBDriver id="mongoDriver"
+									hostname="oceanic.mongohq.com"
+									port="10083"
+									databaseName="TimeKeeper"
+									socketPoolMin="1"
+									socketPoolMax="1"
+									socketTimeOutMs="1000"
+									username="Student1"
+									password="zxc123" />
+	</fx:Declarations>
+	<!--<driver:JMCNetMongoDBDriver id="mongoDriver"
+	hostname="ds041377.mongolab.com"
+	port="41377"
+	databaseName="firstdb"
+	socketPoolMin="1"
+	socketPoolMax="1"
+	socketTimeOutMs="1000"
+	username="Ski"
+	password="qwe123" />-->
+	
+	<!-- Place non-visual elements (e.g., services, value objects) here 
+	</fx:Declarations>-->
+		<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace Views "Views.*";
+		@namespace driver "jmcnet.mongodb.driver.*";
+		@namespace components "components.*";
+		s|TabbedViewNavigator #tabBar
+		{
+			backgroundColor: red;
+		}
+	</fx:Style>
+	<!--<s:Group verticalCenter="0" horizontalCenter="0">
+	<s:layout>
+	<s:VerticalLayout />
+	</s:layout>
+	<s:Label id="stan" text=""/>
+	<s:Button label="Połącz"  click="button1_clickHandler(event)" />
+	<s:Button label="Rozłącz" click="button2_clickHandler(event)" />
+	<s:Button label="Zapisz"  click="button3_clickHandler(event)" />
+	<s:Button label="Odczytaj"  click="button4_clickHandler(event)" />
+	<!-<s:TextInput id="tiLogin"  prompt="username@adres" />
+	<s:TextInput id="tiPassword" prompt="password" />
+	<s:Button label="Nacisnij mnie!" click="button1_clickHandler(event)"/>->	
+	</s:Group>
+	
+	
+	
+	
+	<s:TabbedViewNavigator id="tabbed_view" width="100%" height="100%">		
+	<s:ViewNavigator id="id_todoView" width="100%" height="100%" label="ToDo" firstView="Views.todoView" />
+	<s:ViewNavigator width="100%" height="100%" label="Kalendarz" firstView="Views.Polaczenie" />
+	</s:TabbedViewNavigator>-->
+	
+	<s:ViewNavigator id="id_viewtodo" width="100%" height="100%" firstView="views.todoView" />
+	<!--<s:ViewNavigator id="id_viewtodo" width="100%" height="100%" firstView="views.CameraView" />-->
+	
+	
+	<Views:LoginView id="loginView" left="0" right="0" top="0" bottom="0" visible="true" />
+	
+</s:Application>

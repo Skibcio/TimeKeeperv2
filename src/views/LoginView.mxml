@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		backgroundColor="0xffffff"
+		creationComplete="view1_creationCompleteHandler(event)" xmlns:Style="Style.*">
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace Style "Style.*";
+		.btngreen{
+			bgcolor1:"0x9bc351";
+		}
+		.btnorange{
+			bgcolor1:"0xefae2e";
+			bgcolor2:"0xce962b";
+			colorlabel:"0xffffff";
+		}
+		.btnsilver{
+			bgcolor1:"0xefafafa";
+			bgcolor2:"0xb0b0b0";
+			colorlabel:"0xb0b0b0";
+		}
+	</fx:Style>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import spark.skins.spark.TextInputSkin;
+			
+			import Style.ButtonStyle;
+			
+			import air.net.URLMonitor;
+			
+			import flashx.textLayout.factory.TruncationOptions;
+			
+			private var stan:Boolean = false;
+			
+			public var view:LoginView;
+			
+			private var monitor:URLMonitor;
+			
+			protected function id_btn_login_clickHandler(event:MouseEvent):void
+			{
+				if(id_login.text == ""){
+					id_login.text = "Student1";
+					id_password.text = "zxc123";
+				}
+				if(!stan){
+					TimeKeeperv2.app.mongoDBDriver.logToDataBase(id_login.text, id_password.text);
+				} else {
+					var validData:Boolean = true;
+					if (id_email.text != id_email_confirm.text){
+						validData = false;
+					}
+					if (validData){
+						
+					} else {
+						swith_id_label_stan(true);
+						id_label_stan.text = "Dane nie pasują do siebie";
+					}
+					
+				}
+			}
+			
+			protected function swith_id_label_stan(_visible:Boolean):void
+			{
+				if( _visible == true ){
+					id_label_stan.visible = true;
+				}
+				else{
+					id_label_stan.text = "";
+					id_label_stan.visible = false;
+				}
+			}
+			
+			protected function id_btn_register_clickHandler(event:MouseEvent):void
+			{
+				id_login.text = "";
+				id_password.text = "";
+				
+				id_login_register.text = "";
+				id_email.text = "";
+				id_email_confirm.text = "";
+				swith_id_label_stan(false);
+				
+				if (stan == false){
+					
+					id_Vgroup_login.visible = false;
+					id_Vgroup_login.includeInLayout = false;
+					
+					id_Vgroup_register.includeInLayout = true;
+					id_Vgroup_register.visible = true;
+					
+					id_btn_login.label = "Zarejestuj się";
+					id_btn_register.label = "Logowanie";
+					stan = true;
+				} else {
+					
+					id_Vgroup_register.visible = false;
+					id_Vgroup_register.includeInLayout = false;
+					
+					id_Vgroup_login.includeInLayout = true;
+					id_Vgroup_login.visible = true;
+					
+					id_btn_login.label = "Zaloguj się";
+					id_btn_register.label = "Rejestracja";
+					stan = false;
+				}
+				
+			}
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				view = this;				
+			}
+			
+			protected function announceStatus(ev:StatusEvent):void{
+				if(monitor.available == true){
+					TimeKeeperv2.app.mongoDBDriver.connectToDataBase();
+				} else{
+					swith_id_label_stan(true);
+					id_label_stan.text = "Nie masz połączenia z internetem!";
+					id_btn_odswierz_polaczenie.visible = true;
+					id_btn_odswierz_polaczenie.includeInLayout = true;
+				}
+			}
+			
+			public function startApp():void{
+				
+				monitor = new URLMonitor(new URLRequest('http://google.com'));
+				
+				monitor.addEventListener(StatusEvent.STATUS, announceStatus);
+				
+				monitor.start();
+			}
+			
+			public function afterConnection(stan:Boolean):void{
+				if(stan){
+					id_login.visible = true;
+					id_login.includeInLayout = true;
+					id_password.visible = true;
+					id_password.includeInLayout = true;
+					id_buttony.visible = true;
+					id_buttony.includeInLayout = true;
+				} else{
+					swith_id_label_stan(true);
+					id_label_stan.text = "Posiadasz nieaktualną wersję oprogramowania!";
+				}
+			}
+			
+			protected function id_btn_odswierz_polaczenie_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				swith_id_label_stan(false);
+				id_btn_odswierz_polaczenie.visible = false;
+				id_btn_odswierz_polaczenie.includeInLayout = false;
+				startApp();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<s:Group verticalCenter="0" horizontalCenter="0">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+		<s:VGroup horizontalAlign="center" verticalAlign="middle">
+			
+			<s:VGroup id="id_Vgroup_login" width="100%" visible="true" includeInLayout="true">
+				<s:TextInput id="id_login" width="100%" paddingLeft="10" paddingRight="10" prompt="Login" visible="false" includeInLayout="false" skinClass="spark.skins.spark.TextInputSkin" />
+				<s:TextInput id="id_password" width="100%" paddingLeft="10" paddingRight="10" prompt="Hasło" visible="false" includeInLayout="false" skinClass="spark.skins.spark.TextInputSkin" />
+			</s:VGroup>
+			
+			<s:VGroup id="id_Vgroup_register" width="100%" visible="false" includeInLayout="false">
+				<s:TextInput id="id_login_register"  width="100%" paddingLeft="10" paddingRight="10" prompt="Login" skinClass="spark.skins.spark.TextInputSkin" />
+				<s:TextInput id="id_email" width="100%" paddingLeft="10" paddingRight="10" prompt="E-mail" skinClass="spark.skins.spark.TextInputSkin" />
+				<s:TextInput id="id_email_confirm" width="100%" paddingLeft="10" paddingRight="10" prompt="E-mail - Powtórz" skinClass="spark.skins.spark.TextInputSkin" />
+			</s:VGroup>
+			
+			<s:HGroup paddingTop="15" id="id_buttony" visible="false" includeInLayout="false" >
+				<s:Button id="id_btn_login" 
+						  label="Zaloguj się" 
+						  click="id_btn_login_clickHandler(event)" 
+						  skinClass="Style.ButtonStyle" 
+						  styleName="btnorange" />
+				
+				<s:Button id="id_btn_register" 
+						  label="Rejestracja" 
+						  click="id_btn_register_clickHandler(event)" 
+						  skinClass="Style.ButtonStyle" 
+						  styleName="btnorange" />
+			</s:HGroup>
+			
+			<s:Label id="id_label_stan" 
+					 paddingTop="15" 
+					 paddingRight="15" 
+					 paddingBottom="15" 
+					 paddingLeft="15" 
+					 color="0xff3c3c" backgroundColor="0xebebeb" visible="false" />
+			<s:Button id="id_btn_odswierz_polaczenie" label="Odśwież" click="id_btn_odswierz_polaczenie_clickHandler(event)" skinClass="Style.ButtonStyle" styleName="btnorange" visible="false" includeInLayout="false"/>
+		</s:VGroup>
+	</s:Group>
+</s:View>

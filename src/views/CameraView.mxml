@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" xmlns:elements="org.osmf.elements.*"
+		creationComplete="CameraExample()">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			private var video:Video;
+			
+			private var camera:Camera;
+			
+			public function CameraExample():void {
+				
+				actionBarVisible = false;
+				camera = Camera.getCamera();
+				
+				if (camera != null) {
+					camera.setMode(this.width, this.height, 20);
+					camera.setQuality(0, 100);
+					camera.addEventListener(ActivityEvent.ACTIVITY, activityHandler);
+					video = new Video(this.width, this.height);
+					video.attachCamera(camera);
+					thevido.addChild(video);
+					
+				} else {
+					trace("You need a camera.");
+				}
+			}
+			
+			private function back():void {
+				navigator.popView();
+			}
+			
+			public var bd:BitmapData;
+			
+			private function getPhoto():void {
+				camera = new flash.media.Camera
+				bd = new BitmapData(this.width, this.height);
+				//camera.drawToBitmapData(bd);
+				
+				//TimeKeeperv2.app.photo = bd;
+				trace(bd.getPixel(2, 2).toString());
+				back();
+			}
+			
+			private function activityHandler(event:ActivityEvent):void {
+				trace("activityHandler: " + event);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+		<s:VideoDisplay id="thevido" x="0" y="0" width="100%" height="100%"/>
+		<s:HGroup paddingTop="5" bottom="0" width="100%" id="id_buttony" visible="true" includeInLayout="true" >
+				<s:Button id="id_btn_back" 
+						  label="Anuluj" 
+						  click="back()"
+						  skinClass="Style.ButtonStyle" 
+						  styleName="btnorange"
+						  width="50%" />
+				
+				<s:Button id="id_btn_register" 
+						  label="Zdjęcie" 
+						  click="getPhoto()"
+						  skinClass="Style.ButtonStyle" 
+						  styleName="btnorange"
+						  width="50%" />
+			</s:HGroup>
+		
+</s:View>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer name="CustomItemRen"
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="true"
+				minHeight="45"
+				alternatingItemColors="{data.color}"
+				>
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="done" />
+		<s:State name="selected" />
+	</s:states>
+	
+	<fx:Script>
+		<![CDATA[			
+			import Scripts.todoObject;
+			
+			import flashx.textLayout.tlf_internal;
+			/*protected function button1_clickHandler(evt:MouseEvent):void {
+				trace(data.label + "Are you sure you want to delete this item?");
+			}*/
+			
+			/*protected function alrt_closeHandler(evt:CloseEvent):void {
+				switch (evt.detail) {
+					case Alert.YES:
+					case Alert.OK:
+						Object(owner).dataProvider.removeItemAt(itemIndex);
+						break;
+					case Alert.CANCEL:
+					case Alert.NO:
+						Object(owner).selectedIndex = -1;
+						break;
+					default:
+						break;
+				}
+			}*/
+			
+			protected function buttonToDoDone_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var _styleName:String = id_btnToDoisDone.styleName.toString();
+				/*if (data.isDone == "ture") {
+					//id_btnToDoisDone.styleName = _styleName.substr(0,7) + "No" + _styleName.substring(9, _styleName.length);
+					var doc:Object = {
+						title : data.title ,
+						description: data.description,
+						color : data.color,
+							data : (dt.selectedDate.fullYear).toString() + "-" + (dt.selectedDate.month+1).toString() + "-" + (dt.selectedDate.date).toString() ,
+							//color1 : color1 ,
+							//color2 : color2 ,
+							style: style,
+							isDone: "false"
+					};
+				}
+				if (id_btnToDoisDone.styleName == "btnToDoIsDone_Green"){
+					id_btnToDoisDone.styleName = "btnToDoNoDone_Green";
+				} else {
+					id_btnToDoisDone.styleName = "btnToDoIsDone_Green";
+				}*/
+			}
+			
+			protected function id_btnEdit_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				TimeKeeperv2.app.editToDoNotes(new todoObject(data.title, data.description, data.color, data.date, data.style, data.isDone, data.id));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<!--<s:Image source="{data.imagesrc}" height="18" width="18"/>-->
+	
+	<!--<s:HGroup width="100%" height="100%"
+			  verticalAlign="middle"
+			  paddingLeft="1" paddingRight="1"
+			  paddingTop="1" paddingBottom="1">
+		<s:Label id="lblMain" text="{data.title}" width="100%" paddingLeft="10" />
+	</s:HGroup>-->
+	
+	<s:HGroup width="100%" height="100%"
+			  verticalAlign="middle"
+			  paddingLeft="10" paddingRight="10"
+			  paddingTop="10" paddingBottom="10" gap="5">
+	
+		<s:Button id="id_btnToDoisDone" width="28" height="28" skinClass="Style.ButtonStyleToDoIsDone" styleName="{data.style}" click="buttonToDoDone_clickHandler(event)"/>
+		
+				
+		<!--<s:Rect width="27" height="27">
+			<s:fill>
+				<s:SolidColor color="{data.color2}" alpha="{data.isdone}" />
+			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke color="{data.color2}" weight="3" />
+			</s:stroke>
+			
+		</s:Rect>-->
+				
+		<s:Label id="lblMain" text="{data.title}" color="0xffffff" fontWeight="bold" paddingLeft="10" width="100%" horizontalCenter="0" fontSize="16" />
+		
+		<s:Button id="id_btnEdit" right="5" width="56" height="28" skinClass="Style.ButtonStyle" styleName="{data.style}" label="+" click="id_btnEdit_clickHandler(event)" includeIn="selected" />
+		
+	</s:HGroup>
+	
+</s:ItemRenderer>

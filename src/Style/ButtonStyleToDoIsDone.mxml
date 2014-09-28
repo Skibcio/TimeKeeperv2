@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		minWidth="32"
+		minHeight="32"
+		>
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+	
+	<!-- states -->
+	<s:states>
+		<s:State name="disabled" />
+		<s:State name="down" />
+		<s:State name="over" />
+		<s:State name="up" />
+	</s:states>
+	
+	<!--<fx:Script>
+		<![CDATA[
+		public function creationComplete(): void{
+			var str:String;
+			str = getStyle('srcimage');
+			if (str == "ToDoNoDone.png") {
+				id_isDone.color = 0xffffff;
+			} else {
+				id_isDone.color = getStyle('bgcolor1');
+			}
+		}
+		public function aaa():void{
+		}
+		]]>
+	</fx:Script>-->
+	
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="0" radiusY="0">
+		<s:fill>
+			<s:SolidColor color="{getStyle('bgcolor2')}" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect left="3" right="3" top="3" bottom="3" radiusX="0" radiusY="0">
+		<s:fill>
+			<s:SolidColor color="{getStyle('bgcolorIsDone')}" />
+		</s:fill>
+	</s:Rect>
+	
+	<!--<s:Image left="6" right="6" top="6" bottom="6" width="24" height="24" />
+
+	<!-<s:Rect left="0" right="0" top="0" bottom="0" radiusX="0" radiusY="0" includeIn="down">
+		<s:fill>
+			<s:SolidColor color="{getStyle('bgcolor2')}" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect left="0" right="0" top="5" bottom="0" radiusX="0" radiusY="0" includeIn="down">
+		<s:fill>
+			<s:SolidColor color="{getStyle('bgcolor1')}" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Label id="labelDisplay"
+			 horizontalCenter="0" verticalCenter="0"
+			 left="20" right="20" 
+			 width="100%"
+			 textDecoration="none" color="{getStyle('colorlabel')}">
+	</s:Label>-->
+	
+</s:Skin>

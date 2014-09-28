@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		backgroundColor="0xffffff"
+		title="Do Zrobienia"
+		creationComplete="todoview_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import Scripts.todoObject;
+			
+			import Style.ButtonStyle;
+			
+			import jmcnet.mongodb.documents.MongoDocumentQuery;
+			import jmcnet.mongodb.documents.MongoDocumentResponse;
+			import jmcnet.mongodb.driver.MongoResponder;
+			
+			[Bindable]
+			public var stateArray:ArrayList;
+			
+			public var queryToDo:MongoDocumentQuery;
+			
+			public var view:todoView;
+			
+			protected function todoview_creationCompleteHandler(event:FlexEvent):void
+			{
+				view = this;
+			}
+			
+			protected function actionBtn_clickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(todoNotesView);
+			}
+			
+			public function getToDoList ():void{
+				if(data_picker.visible == true) title_clickHandler(null);
+				stateArray = new ArrayList();
+				queryToDo = new MongoDocumentQuery();
+				queryToDo.addQueryCriteria("data",(dt.selectedDate.fullYear).toString() + "-" + (dt.selectedDate.month+1).toString() + "-" + (dt.selectedDate.date).toString());
+				try{
+					TimeKeeperv2.app.mongoDBDriver.getToDoListMongoDB(queryToDo, this);
+				} catch(e:Error){
+					trace("Pusta Lista");	
+				}
+			}
+			
+			
+			
+			protected function title_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(data_picker.visible == false){
+					
+					todolist.visible = false;
+					todolist.includeInLayout = false; 
+					
+					data_picker.includeInLayout = true;
+					data_picker.visible = true;
+					
+				} else {
+					
+					todolist.visible = true;
+					todolist.includeInLayout = true; 
+					
+					data_picker.includeInLayout = false;
+					data_picker.visible = false;
+					
+				}
+			}
+			
+			protected function id_kalendarz_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				navigator.popView();
+				navigator.pushView(views.CameraView);
+			}
+			
+			protected function id_refresh_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				title_clickHandler(null);
+				getToDoList();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<!--itemRenderer="skins.CustomItemRen"-->
+	</fx:Declarations>
+	<s:titleLayout>
+		<s:BasicLayout />
+	</s:titleLayout>
+	
+	<s:navigationContent>
+		<s:Button label="*" click="getToDoList()" skinClass="Style.ButtonStyle" styleName="btnsilver" />
+	</s:navigationContent>
+	
+	<s:titleContent>
+		<s:Rect width="100%" height="100%" left="1" right="1">
+			<s:fill>
+				<s:SolidColor color="0xefafafa" />
+			</s:fill>
+		</s:Rect>
+		<s:Label text="TimeKeeper" horizontalCenter="0" verticalCenter="0" textDecoration="none" color="0xb0b0b0" click="title_clickHandler(event)" />
+	</s:titleContent>
+	
+	<s:actionContent>
+		<s:Button id="actionBtn" label="+" click="actionBtn_clickHandler(event)" skinClass="Style.ButtonStyle" styleName="btnsilver" />
+	</s:actionContent>
+		
+	<s:VGroup id="data_picker" width="100%" height="100%" visible="false" includeInLayout="false" verticalAlign="middle" horizontalAlign="center">
+		
+		<s:HGroup paddingTop="25" paddingBottom="50" >
+			<s:DateSpinner id="dt" displayMode="date" accentColor="0x0099FF" />        
+		</s:HGroup>
+		<s:Button id="id_refresh"
+				  label="Pobierz zdania"
+				  click="id_refresh_clickHandler(event)"
+				  skinClass="Style.ButtonStyle"
+				  styleName="btnorange"
+				  width="80%" 
+				  />
+	</s:VGroup>
+	<s:Group id="todolist" width="100%" height="100%" visible="true" includeInLayout="true">
+		
+	<s:VGroup width="100%" height="100%">
+	<s:Group width="100%" height="100%" >
+	
+	<s:List id="lst"
+			itemRenderer="Skins.todoListRender"
+			width="100%"
+			height="100%"
+			horizontalCenter="0" verticalCenter="0" contentBackgroundColor="0xffffff"
+			left="0" right="0" top="0" bottom="0"
+			dataProvider="{stateArray}">
+		<s:layout>
+			<s:VerticalLayout horizontalAlign="justify"/>
+		</s:layout>
+	</s:List>
+		
+	</s:Group>
+	
+	<s:HGroup visible="false" includeInLayout="false" 
+			  width="100%"
+			  height="45"
+			  paddingTop="0"
+			  paddingRight="0" 
+			  paddingBottom="0" 
+			  paddingLeft="0" 
+			  verticalAlign="middle" gap="1" >
+		<s:Button id="id_calendar" 
+		label="Kalendarz" 
+		click="id_kalendarz_clickHandler(event)" 
+		skinClass="Style.ButtonStyle" 
+		styleName="btnorange"
+		width="50%" />
+		<s:Button id="id_logout" 
+		label="Wyloguj" 
+		skinClass="Style.ButtonStyle" 
+		styleName="btnorange"
+		width="50%" />
+	</s:HGroup>
+	</s:VGroup>
+		
+	</s:Group>
+</s:View>

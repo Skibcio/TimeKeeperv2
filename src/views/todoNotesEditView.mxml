@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="todoNotesView"
+		backgroundColor="0x8DA72A"
+		backgroundAlpha="0.2"
+		creationComplete="ToDo_netoe_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import Style.ButtonStyle;
+			import Style.ButtonStyleToDoIsDone;
+			
+			import jmcnet.mongodb.documents.MongoDocumentDelete;
+			import jmcnet.mongodb.documents.MongoDocumentQuery;
+			import jmcnet.mongodb.documents.MongoDocumentUpdate;
+			import jmcnet.mongodb.documents.ObjectID;
+			
+			//import flashx.textLayout.formats.BackgroundColor;
+			
+			//import jmcnet.mongodb.documents.MongoDocumentQuery;
+			//import jmcnet.mongodb.documents.MongoDocumentResponse;
+			//import jmcnet.mongodb.driver.MongoResponder;
+			
+			//private var color1:String = "0x8DA72A";
+			//private var color2:String = "0x495716";
+			
+			private var style:String = "btnToDoNoDone_Green";
+			private var color:String = "0x8DA72A";
+			private var isDone:Boolean;
+			private var selectedcolor:int = 0;
+			
+			protected function bordercontainer_clickHandler(_id:int):void
+			{
+				color_fill_green.color = 0xffffff;
+				color_fill_yellow.color = 0xffffff;
+				color_fill_orange.color = 0xffffff;
+				color_fill_blue.color = 0xffffff;
+				color_fill_violet.color = 0xffffff;
+				selectedcolor = _id;
+				switch(_id)
+				{
+					case 0:
+					{
+						if(isDone){style = "btnToDoIsDone_Green";}
+						else{style = "btnToDoNoDone_Green";}
+						color = "0x8DA72A";
+							
+						color_fill_title.color = 0x8DA72A;
+						color_fill_green.color = 0x8DA72A;
+						break;
+					}
+					case 1:
+					{
+						if(isDone){style = "btnToDoIsDone_Yellow";}
+						else{style = "btnToDoNoDone_Yellow";}
+						color = "0xF4B603";
+						
+						color_fill_title.color = 0xF4B603;
+						color_fill_yellow.color = 0xF4B603;
+						break;
+					}
+					case 2:
+					{
+						if(isDone){style = "btnToDoIsDone_Orange";}
+						else{style = "btnToDoNoDone_Orange";}
+						color = "0xD95B11";
+						
+						color_fill_title.color = 0xD95B11;
+						color_fill_orange.color = 0xD95B11;
+						break;
+					}
+					case 3:
+					{
+						if(isDone){style = "btnToDoIsDone_Blue";}
+						else{style = "btnToDoNoDone_Blue";}
+						color = "0x0388C1";
+						
+						color_fill_title.color = 0x0388C1;
+						color_fill_blue.color = 0x0388C1;
+						break;
+					}
+					case 4:
+					{
+						if(isDone){style = "btnToDoIsDone_Violet";}
+						else{style = "btnToDoNoDone_Violet";}
+						color = "0x8A428C";
+						
+						color_fill_title.color = 0x8A428C;
+						color_fill_violet.color = 0x8A428C;			
+						break;
+					}
+					default:
+					{
+						break;
+					}
+						
+				}
+				this.setStyle('backgroundColor', color);
+				id_back.styleName = style;
+				id_accept_ToDo.styleName = style;
+				
+				id_btn_usun.styleName = style;
+				id_btn_zrobine.styleName = style;
+				id_btn_idDone.styleName = style;
+				id_btn_dodaj_zdjecie.styleName = style;
+			}
+			
+			protected function id_back_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				id_title.text = "";
+				id_description.text = "";
+				bordercontainer_clickHandler(0);
+				navigator.popView();
+			}
+			
+			protected function id_accept_ToDo_clickHandler(event:MouseEvent):void
+			{
+				var query:MongoDocumentDelete = new MongoDocumentDelete();
+				var tmpid:ObjectID = ObjectID.fromStringRepresentation(data.id);
+				query.addSelectorCriteria("_id", tmpid);
+				
+				TimeKeeperv2.app.mongoDriver.deleteDoc(TimeKeeperv2.app.LoginCollection,query,null , true);
+				
+				var doc2:Object = {
+					title : id_title.text ,
+					description: id_description.text,
+					color : color,
+					data : (dt.selectedDate.fullYear).toString() + "-" + (dt.selectedDate.month+1).toString() + "-" + (dt.selectedDate.date).toString() ,
+					style: style,
+					isDone: isDone.toString()
+				};
+				TimeKeeperv2.app.mongoDriver.insertDoc(TimeKeeperv2.app.LoginCollection, [doc2]);
+				id_back_clickHandler(null);
+			}
+			
+			protected function id_btn_usun_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var query:MongoDocumentDelete = new MongoDocumentDelete();
+				var tmpid:ObjectID = ObjectID.fromStringRepresentation(data.id);
+				query.addSelectorCriteria("_id", tmpid);
+				
+				TimeKeeperv2.app.mongoDriver.deleteDoc(TimeKeeperv2.app.LoginCollection,query,null , true);
+				
+				id_back_clickHandler(null);
+			}
+			/*public function onInsertResponse(response:MongoDocumentResponse, token:*):void {
+				// localToken is myTokenObject
+				var localToken:ExampleObject = token as ExampleObject;
+				// Here response.isOk is true only if command succeeds
+				if (response.isOk) {
+					// Do something usefull
+				}
+				else {
+					// Do error ...
+				}
+			}*/
+			
+			protected function ToDo_netoe_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.tabBarVisible = false;
+				if(data.isDone == "true") {
+					isDone = true;
+					id_btn_zrobine.label="Nie Zrobione";
+				} else {
+					id_btn_zrobine.label="Zrobione";
+					isDone = false;
+				}
+				switch(data.color)
+				{
+					case "0x8DA72A":
+					{
+						bordercontainer_clickHandler(0);
+						break;
+					}
+					case "0xF4B603":
+					{
+						bordercontainer_clickHandler(1);
+						break;
+					}
+					case "0xD95B11":
+					{
+						bordercontainer_clickHandler(2);
+						break;
+					}
+					case "0x0388C1":
+					{
+						bordercontainer_clickHandler(3);
+						break;
+					}
+					case "0x8A428C":
+					{
+						bordercontainer_clickHandler(4);
+						break;
+					}
+				}
+				
+				
+				
+			}
+			
+			protected function id_btn_zrobine_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(isDone){
+					isDone = false;
+					id_btn_zrobine.label="Zrobione";
+				} else {
+					isDone = true;
+					id_btn_zrobine.label="Nie Zrobione";
+				}
+				
+				bordercontainer_clickHandler(selectedcolor);
+			}
+			
+			protected function id_btn_dodaj_zdjecie_clickHandler():void
+			{
+				if (TimeKeeperv2.app.photo == null){
+					navigator.pushView(views.CameraView);
+				} else {
+					TimeKeeperv2.app.photo = null;
+				}
+				update_btn_photo();
+			}
+			public function update_btn_photo():void {
+				if (TimeKeeperv2.app.photo == null){
+					id_btn_dodaj_zdjecie.label = "Dodaj zdjęcie";
+					id_photo.includeInLayout = false;
+					id_photo.visible = false;
+				} else {
+					id_btn_dodaj_zdjecie.label = "Usuń zdjęcie";
+					id_photo.includeInLayout = true;
+					id_photo.visible = true;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+	
+<fx:Style>
+	@namespace s "library://ns.adobe.com/flex/spark";
+	.btnorange{
+		bgcolor1:"0xefae2e";
+		bgcolor2:"0xce962b";
+	}
+</fx:Style>
+	
+	<fx:Declarations>
+		<s:SolidColor id="color_fill_green" color="0x8DA72A" alpha="0.5" />
+		<s:SolidColor id="color_fill_yellow" color="0xffffff" alpha="0.5" />
+		<s:SolidColor id="color_fill_orange" color="0xffffff" alpha="0.5" />
+		<s:SolidColor id="color_fill_blue" color="0xffffff" alpha="0.5" />
+		<s:SolidColor id="color_fill_violet" color="0xffffff" alpha="0.5" />
+		<s:SolidColor id="color_fill_title" color="0x8DA72A" alpha="0.9" />
+	</fx:Declarations>
+	
+	<s:titleLayout>
+		<s:BasicLayout />
+	</s:titleLayout>
+	
+	<s:navigationContent>
+		<s:Button id="id_back" label="Wróc" click="id_back_clickHandler(event)" skinClass="Style.ButtonStyle" styleName="btnToDoNoDone_Green"/>
+	</s:navigationContent>
+	
+	<s:titleContent>
+		<s:Rect id="id_title_color" width="100%" height="100%" left="1" right="1" fill="{color_fill_title}" />
+		<s:Label text="Nowe zadanie" horizontalCenter="0" verticalCenter="0" textDecoration="none" color="0xffffff"/>
+	</s:titleContent>
+	
+	<s:actionContent>
+		<s:Button id="id_accept_ToDo" label="Aktualizuj" click="id_accept_ToDo_clickHandler(event)" skinClass="Style.ButtonStyle" styleName="btnToDoNoDone_Green" />
+	</s:actionContent>
+	
+	<!--<s:TextArea width="90%" editable="false" skinClass="spark.skins.mobile.TextAreaSkin"
+				text="The DateSpinner control is a specific SpinnerList control that can be used to represent and select a date and/or time. The displayMode property controls whether you're selecting the date, time or both date and time. "/>-->
+	
+	<s:Scroller width="100%" height="100%" >
+		<s:VGroup width="100%" height="100%"
+				  paddingTop="15" paddingBottom="15" paddingLeft="15" paddingRight="15" gap="15"
+				  horizontalAlign="center" verticalAlign="top">
+			
+			
+			
+			<s:HGroup verticalAlign="baseline">
+				<s:Button id="id_btn_idDone" 
+						  width="28" height="28" skinClass="Style.ButtonStyleToDoIsDone"
+						  styleName="{data.style}" 
+						  />
+				
+				<s:Button id="id_btn_zrobine" 
+						  skinClass="Style.ButtonStyle" 
+						  styleName="{data.style}" 
+						  width="100%"
+						  click="id_btn_zrobine_clickHandler(event)"/>
+			</s:HGroup>
+			
+	<s:TextInput id="id_title" width="100%" prompt="Tytuł" text="{data.title}" skinClass="spark.skins.spark.TextInputSkin" />
+	
+		
+	<s:HGroup paddingLeft="15" paddingRight="15" horizontalAlign="center">
+		<s:BorderContainer borderColor="0xffffff" click="bordercontainer_clickHandler(0)">
+			<s:Rect id="id_green" width="38" height="40" fill="{color_fill_green}" radiusX="1" radiusY="1">
+				<s:stroke>
+					<s:SolidColorStroke color="0x8DA72A" weight="4" />
+				</s:stroke>
+			</s:Rect>
+		</s:BorderContainer>
+		
+		<s:BorderContainer borderColor="0xffffff" click="bordercontainer_clickHandler(1)">
+			<s:Rect id="id_yellow" width="38" height="40" fill="{color_fill_yellow}" radiusX="1" radiusY="1">
+				<s:stroke>
+					<s:SolidColorStroke color="0xF4B603" weight="4" />
+				</s:stroke>
+			</s:Rect>
+		</s:BorderContainer>
+		
+		<s:BorderContainer borderColor="0xffffff" click="bordercontainer_clickHandler(2)">
+			<s:Rect id="id_orange" width="38" height="40" fill="{color_fill_orange}" radiusX="1" radiusY="1">
+				<s:stroke>
+					<s:SolidColorStroke color="0xD95B11" weight="4" />
+				</s:stroke>
+			</s:Rect>
+		</s:BorderContainer>
+		
+		<s:BorderContainer borderColor="0xffffff" click="bordercontainer_clickHandler(3)">
+			<s:Rect id="id_blue" width="38" height="40" fill="{color_fill_blue}" radiusX="1" radiusY="1" >
+				<s:stroke>
+					<s:SolidColorStroke color="0x0388C1" weight="4" />
+				</s:stroke>
+			</s:Rect>
+		</s:BorderContainer>
+		
+		<s:BorderContainer borderColor="0xffffff" click="bordercontainer_clickHandler(4)">
+			<s:Rect id="id_violet" width="38" height="40" fill="{color_fill_violet}" radiusX="1" radiusY="1" >
+				<s:stroke>
+					<s:SolidColorStroke color="0x8A428C" weight="4" />
+				</s:stroke>
+			</s:Rect>
+		</s:BorderContainer>
+		
+	</s:HGroup>
+	
+			<s:TextArea id="id_description" width="100%" prompt="Opis" text="{data.description}" skinClass="spark.skins.spark.TextAreaSkin" />
+			
+			
+	<s:HGroup verticalAlign="middle">
+		<s:DateSpinner id="dt" displayMode="date"/>        
+	</s:HGroup>
+	
+			<s:Image id="id_photo"  includeInLayout="false" visible="false" left="0" right="0" source="{TimeKeeperv2.app.photo}" /> <!--source="{TimeKeeperv2.app.photo}"-->
+	
+	<s:Button id="id_btn_dodaj_zdjecie" 
+						  label="Dodaj zdjecie" 
+						  click="id_btn_dodaj_zdjecie_clickHandler()"
+						  width="80%"
+						  skinClass="Style.ButtonStyle" styleName="btnToDoNoDone_Green" />
+				<s:Button id="id_btn_usun" 
+						  label="Usun" 
+						  click="id_btn_usun_clickHandler(event)"
+						  width="80%"
+						  skinClass="Style.ButtonStyle" 
+						  styleName="{data.style}" />
+				
+		</s:VGroup>
+	</s:Scroller>
+	<!--<s:Label text="{dt.selectedDate.date}-{dt.selectedDate.month+1}-{dt.selectedDate.fullYear}"  />-->
+</s:View>

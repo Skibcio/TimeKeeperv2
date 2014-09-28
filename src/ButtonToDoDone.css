@@ -1,0 +1,155 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+.btnToDoNoDone_Green {
+	bgcolor1: "0x8DA72A";
+	bgcolor2: "0x495716";
+	bgcolorIsDone: "0xffffff";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Green {
+	bgcolor1: "0x8DA72A";
+	bgcolor2: "0x495716";
+	bgcolorIsDone: "0x8DA72A";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneGreen.png';
+}
+
+.btnToDoNoDone_Yellow {
+	bgcolor1: "0xF4B603";
+	bgcolor2: "0xAB7F02";
+	bgcolorIsDone: "0xffffff";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Yellow {
+	bgcolor1: "0xF4B603";
+	bgcolor2: "0xAB7F02";
+	bgcolorIsDone: "0xF4B603";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneYellow.png';
+}
+
+.btnToDoNoDone_Orange {
+	bgcolor1: "0xD95B11";
+	bgcolor2: "0x9E420C";
+	bgcolorIsDone: "0xffffff";
+	colorlabel:"0xffffff";
+	srcimage: 'ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Orange {
+	bgcolor1: "0xD95B11";
+	bgcolor2: "0x9E420C";
+	bgcolorIsDone: "0xD95B11";
+	colorlabel:"0xffffff";
+	srcimage: 'ToDoDoneOrange.png';
+}
+
+.btnToDoNoDone_Blue {
+	bgcolor1: "0x0388C1";
+	bgcolor2: "0x025A7F";
+	bgcolorIsDone: "0xffffff";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Blue {
+	bgcolor1: "0x0388C1";
+	bgcolor2: "0x025A7F";
+	bgcolorIsDone: "0x0388C1";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneBlue.png';
+}
+
+.btnToDoNoDone_Violet {
+	bgcolor1: "0x8A428C";
+	bgcolor2: "0x532854";
+	bgcolorIsDone: "0xffffff";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Violet {
+	bgcolor1: "0x8A428C";
+	bgcolor2: "0x532854";
+	bgcolorIsDone: "0x8A428C";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneViolet.png';
+}
+
+/*
+@namespace s "library://ns.adobe.com/flex/spark";
+
+.btnToDoNoDone_Green {
+	bgcolor1: "0x8DA72A";
+	bgcolor2: "0x495716";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Green {
+	bgcolor1: "0x8DA72A";
+	bgcolor2: "0x495716";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneGreen.png';
+}
+
+.btnToDoNoDone_Yellow {
+	bgcolor1: "0xF4B603";
+	bgcolor2: "0xAB7F02";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Yellow {
+	bgcolor1: "0xF4B603";
+	bgcolor2: "0xAB7F02";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneYellow.png';
+}
+
+.btnToDoNoDone_Orange {
+	bgcolor1: "0xD95B11";
+	bgcolor2: "0x9E420C";
+	colorlabel:"0xffffff";
+	srcimage: 'ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Orange {
+	bgcolor1: "0xD95B11";
+	bgcolor2: "0x9E420C";
+	colorlabel:"0xffffff";
+	srcimage: 'ToDoDoneOrange.png';
+}
+
+.btnToDoNoDone_Blue {
+	bgcolor1: "0x0388C1";
+	bgcolor2: "0x025A7F";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Blue {
+	bgcolor1: "0x0388C1";
+	bgcolor2: "0x025A7F";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneBlue.png';
+}
+
+.btnToDoNoDone_Violet {
+	bgcolor1: "0x8A428C";
+	bgcolor2: "0x532854";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoNoDone.png';
+}
+
+.btnToDoIsDone_Violet {
+	bgcolor1: "0x8A428C";
+	bgcolor2: "0x532854";
+	colorlabel:"0xffffff";
+	srcimage: 'image/ToDoDoneViolet.png';
+}*/
